@@ -8,7 +8,8 @@ router.get('/', async (req, res) => {
   try {
     const tagData = await Tag.findAll({
       include: [{
-        model: Product
+        model: Product,
+        through: ProductTag
       }]
     });
     res.status(200).json(tagData);
@@ -55,7 +56,7 @@ router.put('/:id', (req, res) => {
         id: req.params.id
       }
     });
-    if (!tagData) {
+    if (!tagData[0]) {
       res.status(404).json({ message: 'No tag found with this id!' });
       return;
     }
